@@ -33,7 +33,8 @@ app.get('/', (req, res) => {
 }) 
 
 app.post('/signin', (req, res) => {
-  if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
+  if (req.body.email === database.users[0].email && 
+    req.body.password === database.users[0].password) {
     res.json('its working');
   } else {
     res.status(400).json('error logging in')
