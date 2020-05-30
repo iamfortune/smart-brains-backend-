@@ -1,6 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const knex = require('knex')
+
+knex({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'kaycodev',
+    password: '',
+    database: 'smart-brain',
+  },
+});
+
+knex.select
 
 const app = express();
 
