@@ -1,24 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex')
 
-knex({
+const db = knex({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    user: 'kaycodev',
-    password: '',
-    database: 'smart-brain',
+    host : '127.0.0.1',
+    user : 'kaycodev', 
+    password : 'kaycodev20',
+    database : 'smart-brain'
   },
 });
 
-knex.select
-
 const app = express();
-
-app.use(bodyParser.json());
-app.use(cors());
 
 const database = {
   users: [
@@ -41,6 +37,9 @@ const database = {
   ]  
 }
 
+app.use(cors());
+app.use(bodyParser.json());
+
 app.get('/', (req, res) => {
   res.send(database.users)
 }) 
@@ -56,30 +55,32 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
   const { email, name, password } = req.body;
-  database.users.push({
-    id: "125",
-    name: name,
-    email: email,
-    password: password,
-    entries: 0,
-    joined: new Date(),
-  })
-  res.json(database.users[database.users.length-1]);
+ db('users')
+ .returning('*')
+ .insert({
+  email: email,
+  name: name,
+  joined: new Date()
+ }).then(user => {
+    res.json(user[0]);
+ })
+ .catch(err => res.status(400).json('unable to register!'))
 });
 
 app.get('/profile/:id', (req, res) => {
   const { id } = req.params;
   let found = false;
-  database.users.forEach(user => {
-    if (user.id === id) {
-      found = true;
-      return res.json(user);
-    } 
-  })
-  if (!found) {
-    res.status(400).json('not found ');
-  }
-})
+ db.select('*').from('users').where({id})
+ .then(user => {
+   if (user.length) {
+      res.json(user[0]);
+   } else {
+      res.status(400).json('Not found')
+   }
+ })
+ .catch(err => res.status(400).json('error getting user'))
+})  
+
 
 app.put('/image', (req, res) => {
    const { id } = req.body;
@@ -100,4 +101,3 @@ app.put('/image', (req, res) => {
 app.listen(4000, () => {
     console.log('app is running on port 4000');
 });
-
