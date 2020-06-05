@@ -48,8 +48,19 @@ app.post('/signin', (req, res) => {
   db.select('email', 'hash').from('login')
   .where('email', '=', req.body.email)
   .then(data => {
-    console.log(data)
+    const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
+    if (isValid) {
+      return db.select('*').from('users')
+      .where('email', '=', req.body.email)
+      .then(user => {
+        res.json(user[0])
+      })
+      .catch(err => res.status(400).json('unable to get user'))
+    } else {
+      res.status(400).json("wrong username and password");
+    }
   })
+  .catch(err => res.status(400).json('incorrect username and password!'))
 })
 
 app.post('/register', (req, res) => {
@@ -59,6 +70,7 @@ app.post('/register', (req, res) => {
     trx.insert({
       hash: hash,
       email: email,
+
     })
     .into('login')
     .returning('email')
