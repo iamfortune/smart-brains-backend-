@@ -45,17 +45,23 @@ const database = {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> {res.send(database.users) }) 
+app.get('/', (req, res)=> {res.send(db.users) }) 
+// Get users
 
 app.post('/signin', signin.handleSignin(db, bcrypt));
+// user sign in 
 
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) });
+// new users register 
 
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })  
+// Get a user profile and id 
 
-app.put('/imageurl', (req, res) => { image.handleApiCall(req, res) });
+app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
+// Call to clarifai
 
 app.post 
 app.listen(4000, () => {
     console.log('app is running on port 4000');
 });
+
