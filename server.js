@@ -45,7 +45,7 @@ const database = {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> {res.send(db.users) }) 
+app.get('/', (req, res)=> {res.send('it is working!') }) 
 // Get users
 
 app.post('/signin', signin.handleSignin(db, bcrypt));
