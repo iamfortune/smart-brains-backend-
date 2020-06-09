@@ -1,1 +1,1 @@
-# smart brains-backend with nodejs and express
+# smart brains-backend with nodejs and express, postgreSQL 
