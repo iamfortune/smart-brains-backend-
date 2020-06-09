@@ -2,7 +2,7 @@
   "name": "smart-brain",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
   },
@@ -16,9 +16,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.1",
-    "pg": "^8.2.1"
-  },
-  "devDependencies": {
+    "pg": "^8.2.1",
     "nodemon": "^2.0.4"
   },
   "engines": {
