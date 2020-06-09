@@ -60,12 +60,13 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 app.put("/image", (req, res) => {
   image.handleImage(req, res, db);
 });
+// Calls and runs entries for the images
 
 app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
 // Call to clarifai
 
 app.post 
-app.listen(4000, () => {
-    console.log('app is running on port 4000');
+app.listen(process.env.PORT || 4000, () => {
+    console.log(`app is running on port ${process.env.PORT}`);
 });
 
